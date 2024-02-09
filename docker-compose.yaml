@@ -4,6 +4,7 @@ x-spark-common: &spark-common
   image: bitnami/spark:latest
   volumes:
     - ./jobs:/opt/bitnami/spark/jobs
+    - ./data:/opt/bitnami/spark/data
   networks:
     - airflow-spark
 
@@ -17,6 +18,7 @@ x-airflow-common: &airflow-common
     - ./jobs:/opt/airflow/jobs
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
+    - ./data:/opt/airflow/data
   depends_on:
     - postgres
   networks:
@@ -100,14 +102,14 @@ services:
       - "5000:5000"
     environment:
       MLFLOW_S3_ENDPOINT_URL: http://localhost:9000
-      AWS_ACCESS_KEY_ID: sNfs9BFkAWCH4UiG9WuP
-      AWS_SECRET_ACCESS_KEY: R8aF8A0xtfAfMzsxpOi1gVwLkbyxRvVjX7l7Ezkk
+      AWS_ACCESS_KEY_ID: NWLUIMTyWmDpvc7rDTYe
+      AWS_SECRET_ACCESS_KEY: KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS
     command: >
       mlflow server
       --host 0.0.0.0
       --port 5000
       --backend-store-uri sqlite:///mydb.sqlite
-      --default-artifact-root s3://artifact-store/
+      --artifacts-destination /opt/mlruns/
 
 networks:
   airflow-spark:
