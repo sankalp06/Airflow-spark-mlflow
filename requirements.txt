@@ -1,0 +1,7 @@
+apache-airflow
+apache-airflow-providers-apache-spark
+yfinance
+pandas
+pyarrow
+minio
+mlflow==2.9.2

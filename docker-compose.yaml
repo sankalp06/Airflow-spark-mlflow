@@ -1,0 +1,117 @@
+version: '3'
+
+x-spark-common: &spark-common
+  image: bitnami/spark:latest
+  volumes:
+    - ./jobs:/opt/bitnami/spark/jobs
+  networks:
+    - airflow-spark
+
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile.airflow
+  env_file:
+    - airflow.env
+  volumes:
+    - ./jobs:/opt/airflow/jobs
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+  depends_on:
+    - postgres
+  networks:
+    - airflow-spark
+
+services:
+  spark-master:
+    <<: *spark-common
+    command: bin/spark-class org.apache.spark.deploy.master.Master
+    ports:
+      - "9090:8080"
+      - "7077:7077"
+
+  spark-worker:
+    <<: *spark-common
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+    environment:
+      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_MASTER_URL: spark://spark-master:7077
+
+  postgres:
+    image: postgres:14.0
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - airflow-spark
+
+  webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    depends_on:
+      - scheduler
+
+  scheduler:
+    <<: *airflow-common
+    command: bash -c "airflow db migrate && airflow users create --username admin --firstname sankalp --lastname chenna --role Admin --email sankalpchenna@gmail.com --password admin && airflow scheduler"
+
+  minio:
+    image: minio/minio:latest
+    expose:
+      - "9000"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: myuser
+      MINIO_ROOT_PASSWORD: mypassword
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 1s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - minio-data:/data
+    command: >
+      server /data --console-address ":9001"
+    networks:
+      - airflow-spark
+    
+  tracking-server:
+    build: 
+      context: .
+      dockerfile: Dockerfile.mlflow
+    depends_on:
+      - minio
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    environment:
+      MLFLOW_S3_ENDPOINT_URL: http://localhost:9000
+      AWS_ACCESS_KEY_ID: sNfs9BFkAWCH4UiG9WuP
+      AWS_SECRET_ACCESS_KEY: R8aF8A0xtfAfMzsxpOi1gVwLkbyxRvVjX7l7Ezkk
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:///mydb.sqlite
+      --default-artifact-root s3://artifact-store/
+
+networks:
+  airflow-spark:
+
+volumes:
+  minio-data:
+  db-data:
