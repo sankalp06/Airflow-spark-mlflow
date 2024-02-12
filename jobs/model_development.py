@@ -14,7 +14,6 @@ spark = SparkSession.builder \
     .appName("model-development") \
     .getOrCreate()
 
-
 # def load_data(data_path, format=data_format, version=None):
 #     if format == 'parquet':
 #         return spark.read.parquet(data_path, header=True)
@@ -29,7 +28,6 @@ spark = SparkSession.builder \
 #         raise ValueError("Invalid data format. Supported formats are 'parquet' and 'delta'.")
 def pandas_to_spark(df):
     return spark.createDataFrame(df)
-
 
 def get_feature_columns(df, data_type):
     return [col_name for col_name, dt in df.dtypes if dt == data_type]
@@ -129,19 +127,9 @@ def create_experiment(experiment_name, performance_metrics, transformation_pipel
             
 
 def main(data_path, target_feature,experiment_name,model):
-    # Load your data from the provided path
-   
-    #df = load_data(data_path, format=data_format, version=version)
-    # df = load_data(data_path)
-    # df = spark.read.csv(data_path, header=True, inferSchema=True,encoding="UTF-8")
-
-     # Read data using pandas
     df_pd = pd.read_csv(data_path)
-
     # Convert pandas DataFrame to Spark DataFrame
     df_spark = pandas_to_spark(df_pd)
-
-
     # Preprocess the data
     transformation_pipeline,transformed_data = preprocess_data(df_spark, target_feature)
     # Split the data into training and test sets
