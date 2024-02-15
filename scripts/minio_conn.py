@@ -2,6 +2,7 @@ import pandas as pd
 import boto3
 from io import StringIO
 
+
 class MinIODataFrameHandler:
     def __init__(self, minio_server_url, access_key, secret_key, bucket_name):
         self.minio_server_url = minio_server_url
@@ -15,7 +16,7 @@ class MinIODataFrameHandler:
             aws_secret_access_key=secret_key,
         )
 
-    def upload_dataframe(self, df, object_key):
+    def upload_dataframe(self, df, object_key,bucket_name):
         try:
             # Convert DataFrame to CSV format in-memory
             csv_buffer = StringIO()
@@ -34,7 +35,7 @@ class MinIODataFrameHandler:
             print(f"Error uploading DataFrame to MinIO: {e}")
             return False
 
-    def download_dataframe(self, object_key):
+    def download_dataframe(self, object_key,bucket_name):
         try:
             # Download object from the bucket
             response = self.minio_client.get_object(
@@ -52,34 +53,27 @@ class MinIODataFrameHandler:
             print(f"Error downloading DataFrame from MinIO: {e}")
             return None
 
-# Example usage
-if __name__ == "__main__":
-    # MinIO server configuration
-    minio_server_url = 'http://host.docker.internal:9000'
-    access_key = 'your_access_key'
-    secret_key = 'your_secret_key'
-    bucket_name = 'your_bucket_name'
-    object_key = 'data.csv'
+# # Example usage
+# if __name__ == "__main__":
+#     # MinIO server configuration
+#     minio_server_url = 'http://host.docker.internal:9000'
+#     access_key = 'NWLUIMTyWmDpvc7rDTYe'
+#     secret_key = 'KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS'
+#     bucket_name = 'bronze-data'
+#     object_key = 'raw_data.csv'
 
-    # Create MinIODataFrameHandler object
-    minio_handler = MinIODataFrameHandler(minio_server_url, access_key, secret_key, bucket_name)
+#     # Create MinIODataFrameHandler object
+#     minio_handler = MinIODataFrameHandler(minio_server_url, access_key, secret_key, bucket_name)
+#     df = pd.read_csv("/opt/airflow/data/ToyotaCorollaa.csv")
 
-    # Sample DataFrame
-    data = {
-        'Name': ['John', 'Alice', 'Bob'],
-        'Age': [30, 25, 40],
-        'City': ['New York', 'Los Angeles', 'Chicago']
-    }
-    df = pd.DataFrame(data)
+#     # Upload DataFrame to MinIO
+#     minio_handler.upload_dataframe(df, object_key)
 
-    # Upload DataFrame to MinIO
-    minio_handler.upload_dataframe(df, object_key)
+#     # Download DataFrame from MinIO
+#     downloaded_df = minio_handler.download_dataframe(object_key)
 
-    # Download DataFrame from MinIO
-    downloaded_df = minio_handler.download_dataframe(object_key)
-
-    # Display DataFrame
-    if downloaded_df is not None:
-        print(downloaded_df)
-    else:
-        print("DataFrame could not be downloaded.")
+#     # Display DataFrame
+#     if downloaded_df is not None:
+#         print(downloaded_df)
+#     else:
+#         print("DataFrame could not be downloaded.")
