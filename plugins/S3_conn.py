@@ -2,7 +2,6 @@ import pandas as pd
 import boto3
 from io import StringIO
 
-
 class MinIODataFrameHandler:
     def __init__(self, minio_server_url, access_key, secret_key):
         self.minio_server_url = minio_server_url

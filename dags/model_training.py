@@ -21,9 +21,8 @@ default_args = {
     'retries': 1
 }
 
-
 dag = DAG(
-    'model_training_dag',
+    'model_training',
     default_args=default_args,
     description='DAG for training and evaluating ML model',
     schedule_interval='@daily'
@@ -53,6 +52,6 @@ train_model_task = PythonOperator(
     dag=dag
 )
 
-# Set task dependencies
 train_model_task
 
+ 

@@ -5,5 +5,5 @@ model_params:
   source_object_key: "processed_data.csv"
   source_bucket: "silver-data"
   mlflow_tracking_uri: "http://host.docker.internal:5000"
-  mlflow_experiment_name: "NEW_2"
+  mlflow_experiment_name: "Used_Car_price_prediction"
   target_feature: "Price"
