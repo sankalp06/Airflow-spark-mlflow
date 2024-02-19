@@ -70,9 +70,6 @@ def inference(**kwargs):
     with open('/opt/airflow/config/inference_dag_config.yaml', 'r') as file:
         config = yaml.safe_load(file)
     import mlflow
-    mlflow_tracking_uri = "http://host.docker.internal:5000"
-    mlflow.set_tracking_uri(mlflow_tracking_uri)
-
     minio_server_url = config['minio_server_url']
     access_key = config['access_key']
     secret_key = config['secret_key']
@@ -82,6 +79,7 @@ def inference(**kwargs):
     destination_bucket = config['destination_bucket']
     destination_object_key = config['destination_object_key']
     mlflow_tracking_uri = config['mlflow_tracking_uri']
+    mlflow.set_tracking_uri(mlflow_tracking_uri)
 
     mlflow_minio_model_loader = MLflowMinIOModelLoader(
         minio_server_url,

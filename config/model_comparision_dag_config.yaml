@@ -1,0 +1,6 @@
+experiment_name: "Used_Car_price_prediction"
+metric_name: "R2"
+threshold: 0.8
+comparison_operator: "greater"
+registered_model_name: "Used_Car_price_prediction"
+mlflow_tracking_uri: 'http://host.docker.internal:5000'  
