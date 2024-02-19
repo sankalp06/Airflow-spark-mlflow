@@ -1,4 +1,4 @@
-experiment_name: "Used_Car_price_prediction"
+experiment_name: "Used_Car_price_prediction-1"
 metric_name: "R2"
 threshold: 0.8
 comparison_operator: "greater"
