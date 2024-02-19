@@ -1,1 +1,8 @@
 logs
+scripts/__pycache__
+spark_dags/__pycache__
+dags/__pycache__
+modules/__pycache__
+plugins/__pycache__
+utils/__pycache__
+Untitled-1.ipynb

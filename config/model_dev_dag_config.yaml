@@ -1,0 +1,9 @@
+model_params:
+  minio_server_url: "http://host.docker.internal:9000"
+  access_key: "NWLUIMTyWmDpvc7rDTYe"
+  secret_key: "KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS"
+  source_object_key: "processed_data.csv"
+  source_bucket: "silver-data"
+  mlflow_tracking_uri: "http://host.docker.internal:5000"
+  mlflow_experiment_name: "Used_Car_price_prediction"
+  target_feature: "Price"

@@ -18,8 +18,10 @@ x-airflow-common: &airflow-common
     - ./jobs:/opt/airflow/jobs
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
-    - ./data:/opt/airflow/data
-    - ./scripts:/opt/airflow/scripts
+    - ./modules:/opt/airflow/modules
+    - ./utils:/opt/airflow/utils
+    - ./plugins:/opt/airflow/plugins
+    - ./config:/opt/airflow/config
   depends_on:
     - postgres
   networks:

@@ -2,6 +2,20 @@ from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 import pandas as pd
+import os 
+import sys
+
+add_path_to_sys = "/opt/airflow/scripts" 
+sys.path.append(add_path_to_sys)
+dir_path = "/opt/airflow/data" 
+os.chdir(dir_path)
+
+from minio_conn import * 
+
+# Initialize SparkSession
+spark = SparkSession.builder \
+    .appName("transformations") \
+    .getOrCreate()
 
 class DataFrameTransformer:
     def __init__(self, file_location, file_type="csv", infer_schema="true", first_row_is_header="true", delimiter=","):
@@ -62,6 +76,7 @@ class DataFrameTransformer:
                 self.df = self.df.withColumn(column,
                                              F.when((F.col(column) < lower_bound) | (F.col(column) > upper_bound),
                                                     F.coalesce(lower_win, upper_win, F.col(column))))
+        return self.df
 
     def save_to_parquet(self, output_path, mode):
         self.df.write.mode(mode).parquet(output_path)
@@ -87,7 +102,6 @@ column_types_to_convert = {
   "Automatic": "string",
   "CC": "int",
   "Doors": "int",
-  "Cylinders": "int",
   "Gears": "int",
   "Quarterly_Tax": "int",
   "Weight": "int",
@@ -110,13 +124,12 @@ column_types_to_convert = {
   "Backseat_Divider": "string",
   "Metallic_Rim": "string",
   "Radio_cassette": "string",
-  "Parking_Assistant": "string",
   "Tow_Bar": "string"
 
 }
 
 # Remove unnecessary columns
-columns_to_remove = ['Tow_Bar']
+columns_to_remove = ['Tow_Bar','Parking_Assistant','Cylinders']
 
 # Specify feature engineering transformations
 feature_engineering_transformations = {
@@ -125,9 +138,7 @@ feature_engineering_transformations = {
     'Mileage': 'KM / Car_Age'
 }
 
-numerical_columns_list = ['Age_08_04', 'KM', 'HP', 'CC', 'Doors', 'Cylinders', 'Gears', 'Quarterly_Tax',
- 
-                           'Weight', 'Guarantee_Period', 'Mfg_Year','Price']
+numerical_columns_list = ['Age_08_04', 'KM', 'HP', 'CC', 'Doors', 'Gears', 'Quarterly_Tax','Weight','Guarantee_Period', 'Mfg_Year','Price']
 data_path = "/opt/airflow/data/ToyotaCorollaa.csv"
 transformer = DataFrameTransformer(
     file_location=data_path,
@@ -135,6 +146,13 @@ transformer = DataFrameTransformer(
     first_row_is_header="true",
     delimiter=","
 )
+
+# MinIO server configuration
+minio_server_url = 'http://host.docker.internal:9000'
+access_key = 'NWLUIMTyWmDpvc7rDTYe'
+secret_key = 'KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS'
+bucket_name = 'silver-data'
+object_key = 'transformed_data.csv'
 
 # Read data
 transformer.read_csv()
@@ -151,8 +169,18 @@ transformer.remove_unnecessary_columns(columns_to_remove=columns_to_remove)
 lower_bound = 10  # Set your lower bound
 upper_bound = 90  # Set your upper bound
 #transformer.handle_outliers(numerical_columns=list(column_types_to_convert.keys()), lower_bound=lower_bound, upper_bound=upper_bound)
-transformer.handle_outliers(numerical_columns=numerical_columns_list)
+transformed_data = transformer.handle_outliers(numerical_columns=numerical_columns_list)
+transformed_data.show(1)
+pandas_df = transformed_data.toPandas()
 
-output_path_d = "/FileStore/tables/ToyotaCorolla_transformed_delta"
 
-transformer.save_to_delta(output_path=output_path_d, mode="overwrite")
+
+# Create MinIODataFrameHandler object
+minio_handler = MinIODataFrameHandler(minio_server_url, access_key, secret_key, bucket_name)
+
+# Upload DataFrame to MinIO
+minio_handler.upload_dataframe(pandas_df, object_key)
+
+# output_path_d = "/FileStore/tables/ToyotaCorolla_transformed_delta"
+
+# transformer.save_to_delta(output_path=output_path_d, mode="overwrite")

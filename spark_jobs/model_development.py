@@ -3,11 +3,11 @@ from pyspark.ml.feature import Imputer, StandardScaler, VectorAssembler, StringI
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator, BinaryClassificationEvaluator
 from pyspark.ml import Pipeline
 from pyspark.sql.functions import col
-import os
 import pandas as pd
-
-spark_job = "/opt/airflow/jobs" 
-os.chdir(spark_job)
+import sys
+add_path_to_sys = "/opt/airflow/scripts" 
+sys.path.append(add_path_to_sys)
+from minio_conn import *
 
 # Initialize SparkSession
 spark = SparkSession.builder \
@@ -41,6 +41,8 @@ def preprocess_data(df, target_feature):
     assembler = VectorAssembler(inputCols=[f"{col_name}_imputed" for col_name in numerical_columns] +
                                           [f"{col_name}_onehot" for col_name in categorical_columns], outputCol="features")
     scaler = StandardScaler(inputCol="features", outputCol="scaled_features", withStd=True, withMean=True)
+    print(categorical_columns)
+    print(numerical_columns)
     preprocessing_pipeline = Pipeline(stages=numerical_imputers + categorical_stages + [assembler, scaler])
     fitted_preprocessing_pipeline = preprocessing_pipeline.fit(df)
     transformed_data = fitted_preprocessing_pipeline.transform(df)
@@ -123,15 +125,17 @@ def create_experiment(experiment_name, performance_metrics, transformation_pipel
         #mlflow.sklearn.log_model(pipeline, "ml_pipline_2")
         mlflow.spark.log_model(model_pipeline, "model")
         mlflow.spark.log_model(transformation_pipeline, "transformation")
+        mlflow.spark.save_model(transformation_pipeline, "transformation")
         #mlflow.set_tag("model", model_name)
             
 
-def main(data_path, target_feature,experiment_name,model):
-    df_pd = pd.read_csv(data_path)
+def main(target_feature,experiment_name,model,minio_server_url,access_key,bucket_name,object_key):
+    minio_handler = MinIODataFrameHandler(minio_server_url, access_key, secret_key, bucket_name)
+    df_pd = minio_handler.download_dataframe(object_key,bucket_name)
     # Convert pandas DataFrame to Spark DataFrame
-    df_spark = pandas_to_spark(df_pd)
+    df = pandas_to_spark(df_pd)
     # Preprocess the data
-    transformation_pipeline,transformed_data = preprocess_data(df_spark, target_feature)
+    transformation_pipeline,transformed_data = preprocess_data(df, target_feature)
     # Split the data into training and test sets
     train_data, test_data = transformed_data.randomSplit([0.8, 0.2], seed=42)
     # Build and train the model
@@ -149,5 +153,14 @@ if __name__ == "__main__":
     model = LinearRegression()
     experiment_name = "car_price_prediction_"
     target_feature="Price"
+    # MinIO server configuration
+    minio_server_url = 'http://host.docker.internal:9000'
+    access_key = 'NWLUIMTyWmDpvc7rDTYe'
+    secret_key = 'KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS'
+    bucket_name = 'silver-data'
+    object_key = 'transformed_data.csv'
     # Call the main function
-    main(data_path, target_feature,experiment_name,model)   
+    main(target_feature,experiment_name,model,minio_server_url,access_key,bucket_name,object_key)   
+
+
+
