@@ -6,7 +6,8 @@ class ModelPromoter:
 
     def promote_to_stage(self, version, stage):
         try:
-            mlflow.registered_model.transition_model_version_stage(
+            client = mlflow.tracking.MlflowClient()
+            client.transition_model_version_stage(
                 name=self.model_name,
                 version=version,
                 stage=stage
@@ -22,10 +23,20 @@ class ModelPromoter:
         self.promote_to_stage(version, "Production")
 
 
-# Example usage:
-if __name__ == "__main__":
-    model_name = "iris_random_forest_model"
-    model_promoter = ModelPromoter(model_name)
+# if __name__ == "__main__":
+#     mlflow.set_tracking_uri('http://host.docker.internal:5000')
+#     model_name = "Used_Car_price_prediction"
+#     # model_promoter = ModelPromoter(model_name)
 
-    version_to_promote = 1  # Example version
-    model_promoter.promote_to_staging(version_to_promote)
+#     # version_to_promote = 3  
+#     # model_promoter.promote_to_production(version_to_promote)
+
+#     import mlflow.pyfunc
+
+#  # Optional, if not specified, it loads the latest version
+#     stage = "Production"  # Specify the stage you want to load
+
+#     loaded_model = mlflow.sklearn.load_model(
+#         model_uri=f"models:/{model_name}/{stage}"
+#     )
+    
