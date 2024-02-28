@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 import yaml
+from airflow.operators.dummy_operator import DummyOperator
 
 def read_config_from_yaml(yaml_file):
     with open(yaml_file, 'r') as file:
@@ -63,4 +64,14 @@ consumer_task = PythonOperator(
     dag=dag,
 )
 
-producer_task >> consumer_task
+source = DummyOperator(
+    task_id='source',
+    dag=dag,
+)
+
+destination = DummyOperator(
+    task_id='mongodb',
+    dag=dag,
+)
+
+source >> producer_task >> consumer_task >> destination

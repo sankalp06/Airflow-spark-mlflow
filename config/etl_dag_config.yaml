@@ -1,4 +1,30 @@
-task_params:
+extract:
+  monogo_to_minio:
+    mongodb_uri: "mongodb://root:root@host.docker.internal:27017/"
+    database_name: "healthcare_db"
+    collection_name: "patients"
+    minio_endpoint: "http://host.docker.internal:9000"
+    minio_access_key: "NWLUIMTyWmDpvc7rDTYe"
+    minio_secret_key: "KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS"
+    minio_bucket_name: "bronze-data"
+    minio_object_key: "patients.csv"
+
+  postgres_to_minio:
+    pg_conn_params:
+      host: host.docker.internal
+      port: '5432'
+      database: petrol
+      user: airflow
+      password: airflow
+
+    minio_endpoint: "http://host.docker.internal:9000"
+    minio_access_key: "NWLUIMTyWmDpvc7rDTYe"
+    minio_secret_key: "KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS"
+    minio_bucket_name: "bronze-data"
+    minio_object_key: "used_petrol_cars.csv"
+    query: "SELECT * FROM car_data1"
+
+transformation_params:
   minio_server_url: "http://host.docker.internal:9000"
   access_key: "NWLUIMTyWmDpvc7rDTYe"
   secret_key: "KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS"
