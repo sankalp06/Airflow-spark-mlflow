@@ -17,7 +17,7 @@ with open('/opt/airflow/config/model_comparision_dag_config.yaml', 'r') as f:
 # Define the default arguments for the DAG
 default_args = {
     'owner': 'sankalp',
-    'start_date': datetime(2024, 2, 17),
+    'start_date': datetime.utcnow(),
     'retries': 1,
 }
 

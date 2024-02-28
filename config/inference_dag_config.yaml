@@ -1,7 +1,7 @@
 minio_server_url: 'http://host.docker.internal:9000'
 access_key: 'NWLUIMTyWmDpvc7rDTYe'
 secret_key: 'KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS'
-model_uri: 'runs:/3fd49440fd2c4ec7b53d3735ef0bd5ae/model'
+model_uri: 'runs:/1779880744a9437890fa61afac6c1fbb/model'
 source_bucket: 'inference-data'
 source_object_key: 'processed_inference_data.csv'
 destination_bucket: 'gold-data'

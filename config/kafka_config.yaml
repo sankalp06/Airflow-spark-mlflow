@@ -1,0 +1,15 @@
+consumer_config:
+  bootstrap_servers: 'host.docker.internal:9092'
+  topic: 'healthcare_patient_data'
+  group_id: 'healthcare_consumer_group-1'
+  mongo_uri: 'mongodb://root:root@host.docker.internal:27017/'
+  mongo_db_name: 'healthcare_db'
+  mongo_collection_name: 'patients'
+  message_limit: 15
+  batch_size: 5
+
+producer_config:
+  json_file: '/opt/airflow/data/producer.json'
+  bootstrap_servers: 'host.docker.internal:9092'
+  topic: 'healthcare_patient_data'
+
