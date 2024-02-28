@@ -36,7 +36,7 @@ from modules.transform import transformer
 
 # transform and upload data
 def process_and_upload_data(**kwargs):
-    task_params = dag_config['task_params']
+    task_params = dag_config['transformation_params']
      # Read parameters from the YAML file
     with open('/opt/airflow/config/inference_dag_config.yaml', 'r') as file:
         config = yaml.safe_load(file)
@@ -107,7 +107,7 @@ extract_task = DummyOperator(
 transformation_task = PythonOperator(
     task_id='Transform',
     python_callable=process_and_upload_data,
-    op_kwargs=dag_config['task_params'],
+    op_kwargs=dag_config['transformation_params'],
     dag=dag,
 )
 
