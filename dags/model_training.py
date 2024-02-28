@@ -17,7 +17,7 @@ with open("/opt/airflow/config/model_dev_dag_config.yaml", 'r') as stream:
 
 default_args = {
     'owner': 'sankalp',
-    'start_date': datetime(2024, 2, 16),
+    'start_date': datetime.utcnow(),
     'retries': 1
 }
 

@@ -1,0 +1,496 @@
+[
+    {
+      "patient": {
+        "personal_information": {
+          "name": "John Doe",
+          "age": 35,
+          "gender": "male",
+          "contact_details": {
+            "phone": "123-456-7890",
+            "address": "123 Main St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Hypertension", "Diabetes"],
+          "allergies": ["Penicillin"],
+          "medications": [
+            {
+              "name": "Metformin",
+              "dosage": "500mg",
+              "frequency": "Once daily"
+            },
+            {
+              "name": "Lisinopril",
+              "dosage": "10mg",
+              "frequency": "Twice daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-03-05",
+            "doctor": "Dr. Smith",
+            "reason": "Follow-up for hypertension"
+          },
+          {
+            "date": "2024-04-10",
+            "doctor": "Dr. Johnson",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Jane Smith",
+          "age": 42,
+          "gender": "female",
+          "contact_details": {
+            "phone": "456-789-0123",
+            "address": "456 Elm St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Asthma"],
+          "allergies": ["Sulfa"],
+          "medications": [
+            {
+              "name": "Albuterol",
+              "dosage": "Inhaler",
+              "frequency": "As needed"
+            },
+            {
+              "name": "Advair",
+              "dosage": "250/50",
+              "frequency": "Twice daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-03-15",
+            "doctor": "Dr. Lee",
+            "reason": "Asthma check-up"
+          },
+          {
+            "date": "2024-04-20",
+            "doctor": "Dr. Garcia",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Michael Johnson",
+          "age": 50,
+          "gender": "male",
+          "contact_details": {
+            "phone": "789-012-3456",
+            "address": "789 Oak St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["High Cholesterol"],
+          "allergies": [],
+          "medications": [
+            {
+              "name": "Atorvastatin",
+              "dosage": "40mg",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-03-10",
+            "doctor": "Dr. Brown",
+            "reason": "Cholesterol check-up"
+          },
+          {
+            "date": "2024-04-15",
+            "doctor": "Dr. Patel",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Emily Wilson",
+          "age": 28,
+          "gender": "female",
+          "contact_details": {
+            "phone": "012-345-6789",
+            "address": "012 Pine St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Depression"],
+          "allergies": [],
+          "medications": [
+            {
+              "name": "Sertraline",
+              "dosage": "50mg",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-03-25",
+            "doctor": "Dr. Martinez",
+            "reason": "Depression check-up"
+          },
+          {
+            "date": "2024-04-30",
+            "doctor": "Dr. White",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "David Brown",
+          "age": 65,
+          "gender": "male",
+          "contact_details": {
+            "phone": "234-567-8901",
+            "address": "234 Maple St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Arthritis", "High Blood Pressure"],
+          "allergies": ["Aspirin"],
+          "medications": [
+            {
+              "name": "Ibuprofen",
+              "dosage": "200mg",
+              "frequency": "As needed"
+            },
+            {
+              "name": "Losartan",
+              "dosage": "50mg",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-03-20",
+            "doctor": "Dr. Taylor",
+            "reason": "Arthritis check-up"
+          },
+          {
+            "date": "2024-04-25",
+            "doctor": "Dr. Nguyen",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Sarah Miller",
+          "age": 38,
+          "gender": "female",
+          "contact_details": {
+            "phone": "345-678-9012",
+            "address": "345 Cedar St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Migraine"],
+          "allergies": ["Codeine"],
+          "medications": [
+            {
+              "name": "Sumatriptan",
+              "dosage": "100mg",
+              "frequency": "As needed"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-03-28",
+            "doctor": "Dr. Adams",
+            "reason": "Migraine check-up"
+          },
+          {
+            "date": "2024-05-05",
+            "doctor": "Dr. Harris",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Lisa Jones",
+          "age": 45,
+          "gender": "female",
+          "contact_details": {
+            "phone": "456-789-0123",
+            "address": "456 Birch St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Allergy"],
+          "allergies": ["Pollen"],
+          "medications": [
+            {
+              "name": "Loratadine",
+              "dosage": "10mg",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-04-02",
+            "doctor": "Dr. Baker",
+            "reason": "Allergy check-up"
+          },
+          {
+            "date": "2024-05-10",
+            "doctor": "Dr. Martin",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Daniel Taylor",
+          "age": 55,
+          "gender": "male",
+          "contact_details": {
+            "phone": "567-890-1234",
+            "address": "567 Pine St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["High Blood Pressure"],
+          "allergies": [],
+          "medications": [
+            {
+              "name": "Amlodipine",
+              "dosage": "5mg",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-04-05",
+            "doctor": "Dr. Clark",
+            "reason": "Blood pressure check-up"
+          },
+          {
+            "date": "2024-05-15",
+            "doctor": "Dr. Wilson",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Christopher Lee",
+          "age": 40,
+          "gender": "male",
+          "contact_details": {
+            "phone": "678-901-2345",
+            "address": "678 Oak St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Obesity"],
+          "allergies": [],
+          "medications": [
+            {
+              "name": "Orlistat",
+              "dosage": "120mg",
+              "frequency": "Once daily with meals"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-04-12",
+            "doctor": "Dr. Scott",
+            "reason": "Weight management check-up"
+          },
+          {
+            "date": "2024-05-20",
+            "doctor": "Dr. Cooper",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Jennifer Lopez",
+          "age": 30,
+          "gender": "female",
+          "contact_details": {
+            "phone": "789-012-3456",
+            "address": "789 Elm St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Anxiety"],
+          "allergies": [],
+          "medications": [
+            {
+              "name": "Escitalopram",
+              "dosage": "10mg",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-04-18",
+            "doctor": "Dr. King",
+            "reason": "Anxiety check-up"
+          },
+          {
+            "date": "2024-05-25",
+            "doctor": "Dr. Nelson",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Kevin Thomas",
+          "age": 48,
+          "gender": "male",
+          "contact_details": {
+            "phone": "890-123-4567",
+            "address": "890 Cedar St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Heart Disease"],
+          "allergies": ["Shellfish"],
+          "medications": [
+            {
+              "name": "Aspirin",
+              "dosage": "81mg",
+              "frequency": "Once daily"
+            },
+            {
+              "name": "Clopidogrel",
+              "dosage": "75mg",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-04-22",
+            "doctor": "Dr. Turner",
+            "reason": "Heart disease check-up"
+          },
+          {
+            "date": "2024-05-30",
+            "doctor": "Dr. Cooper",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Maria Garcia",
+          "age": 25,
+          "gender": "female",
+          "contact_details": {
+            "phone": "901-234-5678",
+            "address": "901 Maple St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Pregnancy"],
+          "allergies": [],
+          "medications": [
+            {
+              "name": "Prenatal vitamins",
+              "dosage": "1 tablet",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-04-08",
+            "doctor": "Dr. Hernandez",
+            "reason": "Prenatal check-up"
+          },
+          {
+            "date": "2024-06-05",
+            "doctor": "Dr. Lewis",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    },
+    {
+      "patient": {
+        "personal_information": {
+          "name": "Robert Nguyen",
+          "age": 55,
+          "gender": "male",
+          "contact_details": {
+            "phone": "012-345-6789",
+            "address": "012 Pine St, City, Country"
+          }
+        },
+        "medical_history": {
+          "conditions": ["Type 2 Diabetes"],
+          "allergies": [],
+          "medications": [
+            {
+              "name": "Insulin",
+              "dosage": "10 units",
+              "frequency": "Twice daily"
+            },
+            {
+              "name": "Metformin",
+              "dosage": "500mg",
+              "frequency": "Once daily"
+            }
+          ]
+        },
+        "appointments": [
+          {
+            "date": "2024-04-15",
+            "doctor": "Dr. Patel",
+            "reason": "Diabetes check-up"
+          },
+          {
+            "date": "2024-06-10",
+            "doctor": "Dr. Lee",
+            "reason": "Routine check-up"
+          }
+        ]
+      }
+    }
+  ]
+  
