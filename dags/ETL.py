@@ -19,7 +19,7 @@ with open("/opt/airflow/config/etl_dag_config.yaml", 'r') as stream:
 default_args = {
     'owner': 'sankalp',
     'depends_on_past': False,
-    'start_date': datetime(2024, 2, 16),
+    'start_date': datetime.utcnow(),
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
