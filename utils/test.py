@@ -1,8 +1,8 @@
 import csv
-from pymongo import MongoClient
-import boto3
-from io import StringIO
 import datetime
+from io import StringIO
+import boto3
+from pymongo import MongoClient
 
 class MongoDBToS3CSVExporter:
     def __init__(self, mongodb_uri, database_name, collection_name, minio_endpoint, minio_access_key, minio_secret_key, minio_bucket_name, minio_object_key):
@@ -15,8 +15,9 @@ class MongoDBToS3CSVExporter:
         self.aws_access_key_id = minio_access_key
         self.aws_secret_access_key = minio_secret_key
 
-
+    
     def export_new_data_to_csv_in_s3(self):
+        # Get the latest timestamp from MongoDB
         latest_timestamp_mongodb = self.get_latest_timestamp_from_mongodb()
         print("Latest timestamp from MongoDB:", latest_timestamp_mongodb)
 
@@ -24,12 +25,9 @@ class MongoDBToS3CSVExporter:
         latest_timestamp_s3 = self.get_latest_timestamp_from_s3()
         print("Latest timestamp from S3:", latest_timestamp_s3)
 
-        # Convert latest_timestamp_s3 to datetime object
-        latest_timestamp_s3 = datetime.datetime.strptime(latest_timestamp_s3, "%Y-%m-%d %H:%M:%S.%f")
-
         # Compare timestamps
         if latest_timestamp_mongodb is None:
-            print("Error: Unable to retrieve latest timestamp from MongoDB.")
+            print("Error: Unable to retrieve the latest timestamp from MongoDB.")
             return
 
         if latest_timestamp_s3 is not None and latest_timestamp_s3 >= latest_timestamp_mongodb:
@@ -43,10 +41,12 @@ class MongoDBToS3CSVExporter:
 
         # Query MongoDB for records with a timestamp greater than the latest timestamp in S3
         new_records_mongodb = self.query_mongodb_for_new_records(latest_timestamp_s3)
+        print("New records fetched from MongoDB:", new_records_mongodb)
 
         # If there are new records in MongoDB, append them to the existing CSV file in S3
         if new_records_mongodb:
             updated_csv_data = self.append_records_to_existing_csv_in_s3(new_records_mongodb)
+            print("Updated CSV data:", updated_csv_data)
             self.upload_to_s3(updated_csv_data)
 
     def get_latest_timestamp_from_mongodb(self):
@@ -72,39 +72,42 @@ class MongoDBToS3CSVExporter:
         try:
             s3 = boto3.client(
                 's3',
-                aws_access_key_id= "NWLUIMTyWmDpvc7rDTYe",
-                aws_secret_access_key="KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS",
-                endpoint_url="http://host.docker.internal:9000",
+                aws_access_key_id=self.aws_access_key_id,
+                aws_secret_access_key=self.aws_secret_access_key,
+                endpoint_url=self.minio_endpoint,
+
             )
 
             try:
                 # Check if the S3 object exists
-                response = s3.get_object(Bucket="bronze-data", Key=self.s3_object_key)
-                csv_data = response['Body'].read().decode('utf-8').splitlines()
-                reader = csv.DictReader(csv_data)
-
-                latest_timestamp = None
-
-                for row in reader:
-                    timestamp = row.get('timestamp')
-                    if timestamp and (latest_timestamp is None or timestamp > latest_timestamp):
-                        latest_timestamp = timestamp
-
-                print("Latest timestamp from S3:", latest_timestamp)
-                return latest_timestamp
-
+                response = s3.head_object(Bucket=self.s3_bucket_name, Key=self.s3_object_key)
             except s3.exceptions.ClientError as e:
                 # If the object does not exist, return None
-                if e.response['Error']['Code'] == 'NoSuchKey':
+                if e.response['Error']['Code'] == '404':
                     print("S3 object does not exist. Creating a new object.")
                     return None
                 else:
                     # Handle other errors
                     raise e
 
+            # If the object exists, proceed to read the timestamp
+            csv_data = response['Body'].read().decode('utf-8').splitlines()
+            reader = csv.DictReader(csv_data)
+            latest_timestamp = None
+
+            for row in reader:
+                timestamp = row.get('timestamp')
+                if timestamp and (latest_timestamp is None or timestamp > latest_timestamp):
+                    latest_timestamp = timestamp
+                    print("Timestamp found in CSV:", latest_timestamp)
+
+            return latest_timestamp
+
         except Exception as e:
             print(f"Error retrieving CSV from S3: {e}")
             return None
+
+
 
     def query_mongodb_for_new_records(self, latest_timestamp_s3):
         try:
@@ -157,6 +160,7 @@ class MongoDBToS3CSVExporter:
                 })
 
             csv_data_str = csv_data.getvalue()
+            print("CSV data to append:", csv_data_str)
             return csv_data_str
 
         except Exception as e:
@@ -185,16 +189,30 @@ class MongoDBToS3CSVExporter:
             print(f"Error uploading CSV to S3: {e}")
 
 
+
+
+if __name__ == "__main__":
+    exporter = MongoDBToS3CSVExporter(
+        mongodb_uri = "mongodb://root:root@host.docker.internal:27017/",
+        database_name = "healthcare_db",
+        collection_name= "patients",
+        minio_endpoint ="http://host.docker.internal:9000",
+        minio_access_key= "NWLUIMTyWmDpvc7rDTYe",
+        minio_secret_key= "KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS",
+        minio_bucket_name= "bronze-data",
+        minio_object_key="patients_data.csv"
+    )
+    exporter.export_new_data_to_csv_in_s3()
+
+
 # if __name__ == "__main__":
-#     exporter = MongoDBToS3CSVExporter(
-#         mongodb_uri = "mongodb://root:root@host.docker.internal:27017/",
-#         database_name = "healthcare_db",
-#         collection_name= "patients",
+   
+#    get_latest_timestamp_from_s3(
 #         minio_endpoint ="http://host.docker.internal:9000",
 #         minio_access_key= "NWLUIMTyWmDpvc7rDTYe",
 #         minio_secret_key= "KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS",
 #         minio_bucket_name= "bronze-data",
 #         minio_object_key="test.csv"
 #     )
-#     exporter.export_new_data_to_csv_in_s3()
+
 

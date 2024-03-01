@@ -23,13 +23,13 @@ class ModelPromoter:
         self.promote_to_stage(version, "Production")
 
 
-# if __name__ == "__main__":
-#     mlflow.set_tracking_uri('http://host.docker.internal:5000')
-#     model_name = "Used_Car_price_prediction"
-#     # model_promoter = ModelPromoter(model_name)
+if __name__ == "__main__":
+    mlflow.set_tracking_uri('http://host.docker.internal:5000')
+    model_name = "Used_Car_price_prediction"
+    model_promoter = ModelPromoter(model_name)
 
-#     # version_to_promote = 3  
-#     # model_promoter.promote_to_production(version_to_promote)
+    version_to_promote = 3  
+    model_promoter.promote_to_production(version_to_promote)
 
 #     import mlflow.pyfunc
 

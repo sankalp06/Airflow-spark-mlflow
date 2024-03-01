@@ -7,7 +7,7 @@ extract:
     minio_access_key: "NWLUIMTyWmDpvc7rDTYe"
     minio_secret_key: "KX6vXLk0dz42NkBRgsV5gRIpmVYlyOfpg6joowzS"
     minio_bucket_name: "bronze-data"
-    minio_object_key: "patients.csv"
+    minio_object_key: "patients_data.csv"
 
   postgres_to_minio:
     pg_conn_params:

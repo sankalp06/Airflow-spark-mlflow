@@ -11,7 +11,7 @@ sys.path.append(add_path_to_sys)
 
 # Import the required function from the transform module
 from modules.transform import transformer
-from modules.extract.mongodb_S3 import MongoDBToMinIOCSVExporter
+from modules.extract.mongodb_S3 import MongoDBToS3CSVExporter  #MongoDBToMinIOCSVExporter
 from modules.extract.postgres_S3 import PostgreSQLToMinIO
 
 # Load DAG configurations from YAML file
@@ -46,10 +46,8 @@ def mongodb_to_S3():
     minio_bucket_name = monogo_to_minio_config['minio_bucket_name']
     minio_object_key = monogo_to_minio_config['minio_object_key']
     
-    exporter = MongoDBToMinIOCSVExporter(
-        mongodb_uri, database_name, collection_name, minio_endpoint, minio_access_key, minio_secret_key, minio_bucket_name, minio_object_key
-    )
-    exporter.export_to_csv_in_minio()
+    exporter = MongoDBToS3CSVExporter(mongodb_uri, database_name, collection_name, minio_endpoint, minio_access_key, minio_secret_key, minio_bucket_name, minio_object_key )
+    exporter.export_new_data_to_csv_in_s3()
 
 
 def postgres_to_s3():
