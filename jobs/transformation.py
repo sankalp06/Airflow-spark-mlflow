@@ -10,7 +10,6 @@ sys.path.append(add_path_to_sys)
 dir_path = "/opt/airflow/data" 
 os.chdir(dir_path)
 
-from minio_conn import * 
 
 # Initialize SparkSession
 spark = SparkSession.builder \
@@ -139,7 +138,7 @@ feature_engineering_transformations = {
 }
 
 numerical_columns_list = ['Age_08_04', 'KM', 'HP', 'CC', 'Doors', 'Gears', 'Quarterly_Tax','Weight','Guarantee_Period', 'Mfg_Year','Price']
-data_path = "/opt/airflow/data/ToyotaCorollaa.csv"
+data_path = "/opt/airflow/data/ToyotaCorolla.csv"
 transformer = DataFrameTransformer(
     file_location=data_path,
     file_type="csv",
@@ -173,13 +172,6 @@ transformed_data = transformer.handle_outliers(numerical_columns=numerical_colum
 transformed_data.show(1)
 pandas_df = transformed_data.toPandas()
 
-
-
-# Create MinIODataFrameHandler object
-minio_handler = MinIODataFrameHandler(minio_server_url, access_key, secret_key, bucket_name)
-
-# Upload DataFrame to MinIO
-minio_handler.upload_dataframe(pandas_df, object_key)
 
 # output_path_d = "/FileStore/tables/ToyotaCorolla_transformed_delta"
 

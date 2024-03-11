@@ -5,7 +5,7 @@ consumer_config:
   mongo_uri: 'mongodb://root:root@host.docker.internal:27017/'
   mongo_db_name: 'healthcare_db'
   mongo_collection_name: 'patients'
-  message_limit: 15
+  message_limit: 10
   batch_size: 5
 
 producer_config:

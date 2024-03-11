@@ -5,9 +5,10 @@ from pyspark.ml import Pipeline
 from pyspark.sql.functions import col
 import pandas as pd
 import sys
-add_path_to_sys = "/opt/airflow/scripts" 
+add_path_to_sys = "/opt/airflow/" 
 sys.path.append(add_path_to_sys)
-from minio_conn import *
+
+from plugins.S3_conn import MinIODataFrameHandler
 
 # Initialize SparkSession
 spark = SparkSession.builder \

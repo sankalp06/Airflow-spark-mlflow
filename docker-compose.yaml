@@ -1,7 +1,7 @@
 version: '3'
 
 x-spark-common: &spark-common
-  image: bitnami/spark:latest
+  image: bitnami/spark:3.2.1
   volumes:
     - ./jobs:/opt/bitnami/spark/jobs
     - ./data:/opt/bitnami/spark/data
@@ -22,6 +22,7 @@ x-airflow-common: &airflow-common
     - ./plugins:/opt/airflow/plugins
     - ./config:/opt/airflow/config
     - ./data:/opt/airflow/data
+    - ./jobs:/opt/airflow/jobs
   depends_on:
     - postgres
   networks:
